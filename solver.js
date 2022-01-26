@@ -9,36 +9,20 @@ const RL = readline.createInterface({
     output: process.stdout,
 });
 
-const filterWords = (remainWords, tryWord, hint) => {
-    return remainWords.filter((correctWord) => {
+const filterWords = (remainWords, tryWord, hint) =>
+    remainWords.filter((correctWord) => {
         return utils.makeHint(tryWord, correctWord).every((h, i) => {
             return h === hint[i];
         });
     });
-};
 
-const getReductions = (remainWords) => {
-    return words
-        .map((word) => {
-            const expectedReduction = utils.calcExpectedReduction(
-                word,
-                remainWords
-            );
-            return { word: word, reduction: expectedReduction };
-        })
-        .sort((a, b) => {
-            return b["reduction"] - a["reduction"];
-        });
-};
-
-const getInputWord = async () => {
-    return await new Promise((resolve) => {
+const getInputWord = async () =>
+    await new Promise((resolve) => {
         RL.question("INPUT WORD > ", resolve);
     });
-};
 
-const getInputHint = async () => {
-    return (
+const getInputHint = async () =>
+    (
         await new Promise((resolve) => {
             RL.question("HINT > ", resolve);
         })
@@ -47,7 +31,6 @@ const getInputHint = async () => {
         .map((v) => {
             return parseInt(v);
         });
-};
 
 const interactUser = async (remainWords, reductions) => {
     console.log("-----");
@@ -90,6 +73,6 @@ const interactUser = async (remainWords, reductions) => {
 
     while (true) {
         remainWords = await interactUser(remainWords, reductions);
-        reductions = getReductions(remainWords);
+        reductions = utils.getReductions(remainWords, words);
     }
 })();

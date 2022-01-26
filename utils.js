@@ -50,5 +50,16 @@ const calcExpectedReduction = (tryWord, remainWords) => {
     return expectedReduction;
 };
 
+const getReductions = (remainWords, allWords) =>
+    allWords
+        .map((word) => ({
+            word: word,
+            reduction: calcExpectedReduction(word, remainWords),
+        }))
+        .sort((a, b) => {
+            return b["reduction"] - a["reduction"];
+        });
+
 exports.makeHint = makeHint;
 exports.calcExpectedReduction = calcExpectedReduction;
+exports.getReductions = getReductions;
