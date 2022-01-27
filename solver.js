@@ -62,8 +62,7 @@ const interactUser = async (remainWords, reductions) => {
 };
 
 (async () => {
-    const strategy = process.argv.includes("--mean") ? "mean" : "min";
-    let reductions = require(`./data/${strategy}.json`);
+    let reductions = require(`./data/reductions.json`);
     const allWords = reductions.map((v) => v["word"]);
     let remainWords = allWords;
 
@@ -73,6 +72,6 @@ const interactUser = async (remainWords, reductions) => {
             reductions
         );
         remainWords = filterWords(remainWords, inputWord, inputHint);
-        reductions = await utils.getReductions(remainWords, allWords, strategy);
+        reductions = await utils.getReductions(remainWords, allWords);
     }
 })();

@@ -4,10 +4,6 @@ const utils = require("./utils.js");
 parentPort.postMessage(
     workerData.tryWords.map((word) => ({
         word: word,
-        reduction: utils.calcReductionWithStrategy(
-            word,
-            workerData.remainWords,
-            utils.Strategy[workerData.strategy]
-        ),
+        reduction: utils.calcReduction(word, workerData.remainWords),
     }))
 );
