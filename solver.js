@@ -1,9 +1,6 @@
 const readline = require("readline");
 const utils = require("./utils.js");
 
-const wordsWithReductions = require("./data/wordsWithReductions.json");
-const words = wordsWithReductions.map((v) => v["word"]);
-
 const RL = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -65,8 +62,10 @@ const interactUser = async (remainWords, reductions) => {
 };
 
 (async () => {
-    let reductions = wordsWithReductions;
-    let remainWords = words;
+    const strategy = process.argv.includes("--mean") ? "mean" : "min";
+    let reductions = require(`./data/${strategy}.json`);
+    const allWords = reductions.map((v) => v["word"]);
+    let remainWords = allWords;
 
     while (true) {
         const [inputWord, inputHint] = await interactUser(
@@ -74,6 +73,6 @@ const interactUser = async (remainWords, reductions) => {
             reductions
         );
         remainWords = filterWords(remainWords, inputWord, inputHint);
-        reductions = await utils.getReductions(remainWords, words);
+        reductions = await utils.getReductions(remainWords, allWords, strategy);
     }
 })();

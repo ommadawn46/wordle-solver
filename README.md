@@ -7,49 +7,49 @@ GREEN  = 2
 ```
 
 ```
-❯ node solver       
+❯ node solver --min
 -----
-NUMBER OF LEFT WORDS: 12972 
+NUMBER OF LEFT WORDS: 12972
 
 BEST WORDS:
-        #1: lares 12683.261794634598
-        #2: rales 12679.893925377728
-        #3: tares 12669.508325624409
-        #4: soare 12668.169133518342
-        #5: reais 12667.238976256549
+        #1: serai 12275
+        #2: reais 12203
+        #3: soare 12203
+        #4: paseo 12196
+        #5: aeros 12171
 
-INPUT WORD > lares
-HINT > 11000
------
-NUMBER OF LEFT WORDS: 258 
-
-BEST WORDS:
-        #1: aloin 241.00000000000009
-        #2: apian 239.51937984496132
-        #3: poind 238.79844961240312
-        #4: allay 238.5813953488373
-        #5: piony 238.53488372093025
-
-INPUT WORD > aloin
-HINT > 12020
------
-NUMBER OF LEFT WORDS: 5 
-
-LEFT WORDS: [ 'plait', 'plaid', 'claim', 'glaik', 'flail' ] 
-
-BEST WORDS:
-        #1: kempt 4
-        #2: cadet 3.6000000000000005
-        #3: tamed 3.6000000000000005
-        #4: tepal 3.6000000000000005
-        #5: petal 3.6000000000000005
-
-INPUT WORD > kempt
+INPUT WORD > serai
 HINT > 00100
 -----
-NUMBER OF LEFT WORDS: 1 
+NUMBER OF LEFT WORDS: 214
 
-LEFT WORDS: [ 'claim' ] 
+BEST WORDS:
+        #1: choon 190
+        #2: croon 189
+        #3: phono 189
+        #4: brunt 188
+        #5: cloot 187
 
-ANSWER: claim
+INPUT WORD > croon
+HINT > 01020
+-----
+NUMBER OF LEFT WORDS: 6
+
+LEFT WORDS: [ 'tumor', 'fluor', 'pudor', 'humor', 'tutor', 'rumor' ]
+
+BEST WORDS:
+        #1: ruths 5
+        #2: musth 5
+        #3: mutha 5
+        #4: mouth 5
+        #5: dutch 5
+
+INPUT WORD > ruths
+HINT > 12010
+-----
+NUMBER OF LEFT WORDS: 1
+
+LEFT WORDS: [ 'humor' ]
+
+ANSWER: humor
 ```

@@ -8,6 +8,28 @@ const TileColor = {
     GREEN: 2,
 };
 
+const Strategy = {
+    min: (hintCounter, wordsNumber) => {
+        let minReduction;
+        for (let hint in hintCounter) {
+            const reductions = wordsNumber - hintCounter[hint];
+            if (!minReduction || reductions < minReduction) {
+                minReduction = reductions;
+            }
+        }
+        return minReduction;
+    },
+    mean: (hintCounter, wordsNumber) => {
+        let expectedReduction = 0;
+        for (let hint in hintCounter) {
+            const probability = hintCounter[hint] / wordsNumber;
+            const reductions = wordsNumber - hintCounter[hint];
+            expectedReduction += probability * reductions;
+        }
+        return expectedReduction;
+    },
+};
+
 const makeHint = (tryWord, correctWord) => {
     tryWord = tryWord.toLowerCase();
     correctWord = correctWord.toLowerCase();
@@ -32,7 +54,7 @@ const makeHint = (tryWord, correctWord) => {
         );
 };
 
-const calcExpectedReduction = (tryWord, remainWords) => {
+const calcReductionWithStrategy = (tryWord, remainWords, strategy) => {
     const hintCounter = {};
 
     remainWords.forEach((correctWord) => {
@@ -40,17 +62,10 @@ const calcExpectedReduction = (tryWord, remainWords) => {
         hintCounter[hint] = hintCounter[hint] + 1 || 1;
     });
 
-    let expectedReduction = 0;
-    for (let hint in hintCounter) {
-        const probability = hintCounter[hint] / remainWords.length;
-        const reductions = remainWords.length - hintCounter[hint];
-        expectedReduction += probability * reductions;
-    }
-
-    return expectedReduction;
+    return strategy(hintCounter, remainWords.length);
 };
 
-const getReductions = async (remainWords, allWords) => {
+const getReductions = async (remainWords, allWords, strategy) => {
     const size = allWords.length / WORKER_NUMBER;
 
     const promises = [...Array(WORKER_NUMBER).keys()].map((i) => {
@@ -64,6 +79,7 @@ const getReductions = async (remainWords, allWords) => {
                 workerData: {
                     tryWords: tryWords,
                     remainWords: remainWords,
+                    strategy: strategy,
                 },
             }).on("message", (workerResult) => resolve(workerResult))
         );
@@ -74,6 +90,7 @@ const getReductions = async (remainWords, allWords) => {
     });
 };
 
+exports.Strategy = Strategy;
 exports.makeHint = makeHint;
-exports.calcExpectedReduction = calcExpectedReduction;
+exports.calcReductionWithStrategy = calcReductionWithStrategy;
 exports.getReductions = getReductions;
