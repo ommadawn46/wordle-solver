@@ -61,10 +61,7 @@ const interactUser = async (remainWords, reductions) => {
     );
     console.log();
 
-    const inputWord = await getInputWord();
-    const inputHint = await getInputHint();
-
-    return filterWords(remainWords, inputWord, inputHint);
+    return [await getInputWord(), await getInputHint()];
 };
 
 (async () => {
@@ -72,7 +69,11 @@ const interactUser = async (remainWords, reductions) => {
     let remainWords = words;
 
     while (true) {
-        remainWords = await interactUser(remainWords, reductions);
-        reductions = utils.getReductions(remainWords, words);
+        const [inputWord, inputHint] = await interactUser(
+            remainWords,
+            reductions
+        );
+        remainWords = filterWords(remainWords, inputWord, inputHint);
+        reductions = await utils.getReductions(remainWords, words);
     }
 })();

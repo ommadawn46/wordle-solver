@@ -1,3 +1,7 @@
+const { Worker } = require("worker_threads");
+
+const WORKER_NUMBER = 16;
+
 const TileColor = {
     GRAY: 0,
     YELLOW: 1,
@@ -14,22 +18,18 @@ const makeHint = (tryWord, correctWord) => {
         .split("")
         .map((char, i) => {
             if (char === tryWord[i]) {
-                return TileColor.GREEN;
+                return true;
             }
             charCounter[char] = charCounter[char] + 1 || 1;
-            return TileColor.GRAY;
+            return false;
         })
-        .map((tileColor, i) => {
-            if (
-                tileColor != TileColor.GREEN &&
-                charCounter[tryWord[i]] > 0 &&
-                correctWord.includes(tryWord[i])
-            ) {
-                charCounter[tryWord[i]]--;
-                return TileColor.YELLOW;
-            }
-            return tileColor;
-        });
+        .map((isGreen, i) =>
+            isGreen
+                ? TileColor.GREEN
+                : tryWord[i] in charCounter && charCounter[tryWord[i]]-- > 0
+                ? TileColor.YELLOW
+                : TileColor.GRAY
+        );
 };
 
 const calcExpectedReduction = (tryWord, remainWords) => {
@@ -50,15 +50,29 @@ const calcExpectedReduction = (tryWord, remainWords) => {
     return expectedReduction;
 };
 
-const getReductions = (remainWords, allWords) =>
-    allWords
-        .map((word) => ({
-            word: word,
-            reduction: calcExpectedReduction(word, remainWords),
-        }))
-        .sort((a, b) => {
-            return b["reduction"] - a["reduction"];
-        });
+const getReductions = async (remainWords, allWords) => {
+    const size = allWords.length / WORKER_NUMBER;
+
+    const promises = [...Array(WORKER_NUMBER).keys()].map((i) => {
+        const tryWords =
+            i + 1 !== WORKER_NUMBER
+                ? allWords.slice(i * size, (i + 1) * size)
+                : allWords.slice(i * size);
+
+        return new Promise((resolve) =>
+            new Worker("./worker.js", {
+                workerData: {
+                    tryWords: tryWords,
+                    remainWords: remainWords,
+                },
+            }).on("message", (workerResult) => resolve(workerResult))
+        );
+    });
+
+    return [].concat(...(await Promise.all(promises))).sort((a, b) => {
+        return b.reduction - a.reduction;
+    });
+};
 
 exports.makeHint = makeHint;
 exports.calcExpectedReduction = calcExpectedReduction;
