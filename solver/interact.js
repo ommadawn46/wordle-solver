@@ -21,7 +21,7 @@ const getInputHint = async () =>
             return parseInt(v);
         });
 
-const prompt = async (remainWords, reductions) => {
+exports.prompt = async (remainWords, reductions, isHardMode) => {
     console.log("-----");
 
     console.log("NUMBER OF LEFT WORDS:", remainWords.length, "\n");
@@ -38,19 +38,18 @@ const prompt = async (remainWords, reductions) => {
         process.exit(1);
     }
 
-    console.log("BEST WORDS:");
-    [...Array(reductions.length >= 5 ? 5 : reductions.length).keys()].forEach(
-        (i) => {
-            console.log(
-                `\t#${i + 1}:`,
-                reductions[i]["word"],
-                reductions[i]["reduction"]
-            );
-        }
-    );
+    console.log(`BEST WORDS${isHardMode ? " (Hard Mode)" : ""}:`);
+
+    const ranking = isHardMode
+        ? reductions.filter((r) => remainWords.includes(r.word))
+        : reductions;
+
+    ranking
+        .slice(0, ranking.length >= 5 ? 5 : ranking.length)
+        .forEach((r, i) => {
+            console.log(`\t#${i + 1}:`, r.word, r.reduction);
+        });
     console.log();
 
-    return [await getInputWord(), await getInputHint()];
+    return [(await getInputWord()).toLowerCase(), await getInputHint()];
 };
-
-exports.prompt = prompt;

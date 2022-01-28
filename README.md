@@ -1,5 +1,7 @@
 # wordle-solver
 
+[WORDLE](https://www.powerlanguage.co.uk/wordle/) solver written in node.js
+
 ```
 ⬛ = 0
 🟨 = 1
@@ -16,7 +18,10 @@
 ## Usage
 
 ```
-node main
+node main [--hard]
+
+Options:
+  --hard  enable Hard Mode
 ```
 
 
