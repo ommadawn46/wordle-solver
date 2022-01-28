@@ -1,13 +1,13 @@
 const fs = require("fs");
 const { performance } = require("perf_hooks");
-const utils = require("./utils.js");
+const wordle = require("./solver/wordle.js");
 
 const words = require("./data/words.json");
 
 const makeData = async () => {
     const startTime = performance.now();
     console.log("processing...");
-    wordsWithReducts = await utils.getReductions(words, words);
+    reductions = await wordle.getReductions(words, words);
 
     const endTime = performance.now();
     console.log(
@@ -16,8 +16,8 @@ const makeData = async () => {
         "sec"
     );
 
-    const outfile = `./data/reductions.json`;
-    fs.writeFileSync(outfile, JSON.stringify(wordsWithReducts));
+    const outfile = "./data/reductions.json";
+    fs.writeFileSync(outfile, JSON.stringify(reductions));
     console.log("OUTFILE:", outfile);
 };
 

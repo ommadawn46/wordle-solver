@@ -1,13 +1,29 @@
 # wordle-solver
 
 ```
-GRAY   = 0
-YELLOW = 1
-GREEN  = 2
+⬛ = 0
+🟨 = 1
+🟩 = 2
 ```
 
 ```
-❯ node solver
+⬛⬛⬛⬛⬛ = 00000
+🟨🟩⬛⬛🟨 = 12001
+🟩🟩🟩🟩🟩 = 22222
+```
+
+
+## Usage
+
+```
+node main
+```
+
+
+## Demo
+
+```
+❯ node main
 -----
 NUMBER OF LEFT WORDS: 12972 
 

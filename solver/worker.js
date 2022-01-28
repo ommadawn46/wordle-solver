@@ -1,9 +1,9 @@
 const { parentPort, workerData } = require("worker_threads");
-const utils = require("./utils.js");
+const wordle = require("./wordle.js");
 
 parentPort.postMessage(
     workerData.tryWords.map((word) => ({
         word: word,
-        reduction: utils.calcReduction(word, workerData.remainWords),
+        reduction: wordle.calcReduction(word, workerData.remainWords),
     }))
 );

@@ -1,17 +1,9 @@
 const readline = require("readline");
-const utils = require("./utils.js");
 
 const RL = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
 });
-
-const filterWords = (remainWords, tryWord, hint) =>
-    remainWords.filter((correctWord) => {
-        return utils.makeHint(tryWord, correctWord).every((h, i) => {
-            return h === hint[i];
-        });
-    });
 
 const getInputWord = async () =>
     await new Promise((resolve) => {
@@ -29,7 +21,7 @@ const getInputHint = async () =>
             return parseInt(v);
         });
 
-const interactUser = async (remainWords, reductions) => {
+const prompt = async (remainWords, reductions) => {
     console.log("-----");
 
     console.log("NUMBER OF LEFT WORDS:", remainWords.length, "\n");
@@ -61,17 +53,4 @@ const interactUser = async (remainWords, reductions) => {
     return [await getInputWord(), await getInputHint()];
 };
 
-(async () => {
-    let reductions = require(`./data/reductions.json`);
-    const allWords = reductions.map((v) => v["word"]);
-    let remainWords = allWords;
-
-    while (true) {
-        const [inputWord, inputHint] = await interactUser(
-            remainWords,
-            reductions
-        );
-        remainWords = filterWords(remainWords, inputWord, inputHint);
-        reductions = await utils.getReductions(remainWords, allWords);
-    }
-})();
+exports.prompt = prompt;

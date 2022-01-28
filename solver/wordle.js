@@ -65,12 +65,16 @@ const getReductions = async (remainWords, allWords) => {
                 : allWords.slice(i * size);
 
         return new Promise((resolve) =>
-            new Worker("./worker.js", {
+            new Worker("./solver/worker.js", {
                 workerData: {
                     tryWords: tryWords,
                     remainWords: remainWords,
                 },
-            }).on("message", (workerResult) => resolve(workerResult))
+            })
+                .on("message", (workerResult) => resolve(workerResult))
+                .on("error", (err) => {
+                    console.log(err);
+                })
         );
     });
 
@@ -83,6 +87,14 @@ const getReductions = async (remainWords, allWords) => {
         );
 };
 
+const filterWords = (remainWords, tryWord, hint) =>
+    remainWords.filter((correctWord) => {
+        return makeHint(tryWord, correctWord).every((h, i) => {
+            return h === hint[i];
+        });
+    });
+
 exports.makeHint = makeHint;
 exports.calcReduction = calcReduction;
 exports.getReductions = getReductions;
+exports.filterWords = filterWords;
