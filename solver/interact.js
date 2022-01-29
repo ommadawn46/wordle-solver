@@ -17,11 +17,9 @@ const getInputHint = async () =>
         })
     )
         .split("")
-        .map((v) => {
-            return parseInt(v);
-        });
+        .map((v) => parseInt(v));
 
-exports.prompt = async (remainWords, reductions, isHardMode) => {
+exports.print = (remainWords, reductions, isHardMode) => {
     console.log("-----");
 
     console.log("NUMBER OF LEFT WORDS:", remainWords.length, "\n");
@@ -50,6 +48,9 @@ exports.prompt = async (remainWords, reductions, isHardMode) => {
             console.log(`\t#${i + 1}:`, r.word, r.reduction);
         });
     console.log();
-
-    return [(await getInputWord()).toLowerCase(), await getInputHint()];
 };
+
+exports.prompt = async () => [
+    (await getInputWord()).toLowerCase(),
+    await getInputHint(),
+];

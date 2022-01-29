@@ -8,10 +8,8 @@ const TileColor = {
     GREEN: 2,
 };
 
-const makeHint = (tryWord, correctWord) => {
-    const charCounter = {};
-
-    return correctWord
+const makeHint = (tryWord, correctWord, charCounter = {}) =>
+    correctWord
         .split("")
         .map((char, i) => {
             if (char === tryWord[i]) {
@@ -27,21 +25,6 @@ const makeHint = (tryWord, correctWord) => {
                 ? TileColor.YELLOW
                 : TileColor.GRAY
         );
-};
-
-const calcMin = (hintCounter, wordsNumber) =>
-    Object.keys(hintCounter)
-        .map((hint) => wordsNumber - hintCounter[hint])
-        .reduce((r, s) => (r < s ? r : s));
-
-const calcMean = (hintCounter, wordsNumber) =>
-    Object.keys(hintCounter)
-        .map(
-            (hint) =>
-                (wordsNumber - hintCounter[hint]) *
-                (hintCounter[hint] / wordsNumber)
-        )
-        .reduce((r, s) => r + s);
 
 const generateWorkerPromises = (remainWords, allWords, size) =>
     [...Array(WORKER_NUMBER).keys()]
@@ -66,20 +49,27 @@ const generateWorkerPromises = (remainWords, allWords, size) =>
                 )
         );
 
-exports.calcReduction = (tryWord, remainWords) => {
-    const hintCounter = {};
-
+exports.makeHintCounter = (tryWord, remainWords, hintCounter = {}) => {
     remainWords
         .map((correctWord) => makeHint(tryWord, correctWord))
         .forEach((hint) => {
             hintCounter[hint] = hintCounter[hint] + 1 || 1;
         });
-
-    return {
-        min: calcMin(hintCounter, remainWords.length),
-        mean: calcMean(hintCounter, remainWords.length),
-    };
+    return hintCounter;
 };
+
+exports.calcReduction = (hintCounter, wordsNumber) => ({
+    min: Object.keys(hintCounter)
+        .map((hint) => wordsNumber - hintCounter[hint])
+        .reduce((r, s) => (r < s ? r : s)),
+    mean: Object.keys(hintCounter)
+        .map(
+            (hint) =>
+                (wordsNumber - hintCounter[hint]) *
+                (hintCounter[hint] / wordsNumber)
+        )
+        .reduce((r, s) => r + s),
+});
 
 exports.getReductions = async (remainWords, allWords) =>
     remainWords.length > 0
@@ -101,8 +91,6 @@ exports.getReductions = async (remainWords, allWords) =>
         : [];
 
 exports.filterWords = (remainWords, tryWord, hint) =>
-    remainWords.filter((correctWord) => {
-        return makeHint(tryWord, correctWord).every((h, i) => {
-            return h === hint[i];
-        });
-    });
+    remainWords.filter((correctWord) =>
+        makeHint(tryWord, correctWord).every((h, i) => h === hint[i])
+    );
