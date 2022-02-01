@@ -49,6 +49,21 @@ const generateWorkerPromises = (remainWords, allWords, size) =>
                 )
         );
 
+const compareReductions = (a, b, remainWords) => {
+    if (a.reduction.min !== b.reduction.min) {
+        return b.reduction.min - a.reduction.min;
+    }
+    if (b.reduction.mean !== a.reduction.mean) {
+        return b.reduction.mean - a.reduction.mean;
+    }
+
+    const aRemain = remainWords.includes(a.word);
+    if (aRemain === remainWords.includes(b.word)) {
+        return 0;
+    }
+    return aRemain ? -1 : 1;
+};
+
 exports.makeHintCounter = (tryWord, remainWords, hintCounter = {}) => {
     remainWords
         .map((correctWord) => makeHint(tryWord, correctWord))
@@ -83,11 +98,7 @@ exports.getReductions = async (remainWords, allWords) =>
               )
           )
               .reduce((p, q) => p.concat(q))
-              .sort((a, b) =>
-                  a.reduction.min === b.reduction.min
-                      ? b.reduction.mean - a.reduction.mean
-                      : b.reduction.min - a.reduction.min
-              )
+              .sort((a, b) => compareReductions(a, b, remainWords))
         : [];
 
 exports.filterWords = (remainWords, tryWord, hint) =>

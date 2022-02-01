@@ -21,10 +21,11 @@ const loop = async (reductions, remainWords, allWords, isHardMode) => {
 
 const isHardMode = process.argv.includes("--hard");
 const reductions = require("./data/reductions.json");
+const answerWords = require("./data/answerWords.json");
 
 loop(
     reductions,
-    reductions.map((v) => v.word),
+    answerWords,
     reductions.map((v) => v.word),
     isHardMode
 );

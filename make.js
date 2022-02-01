@@ -2,12 +2,13 @@ const fs = require("fs");
 const { performance } = require("perf_hooks");
 const wordle = require("./solver/wordle.js");
 
-const words = require("./data/words.json");
+const answerWords = require("./data/answerWords.json");
+const allWords = answerWords.concat(require("./data/nonAnswerWords.json"));
 
 const makeData = async () => {
     const startTime = performance.now();
     console.log("processing...");
-    reductions = await wordle.getReductions(words, words);
+    reductions = await wordle.getReductions(answerWords, allWords);
 
     const endTime = performance.now();
     console.log(
