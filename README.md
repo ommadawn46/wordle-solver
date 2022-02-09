@@ -30,33 +30,52 @@ Options:
 ```
 ❯ node main
 -----
-NUMBER OF LEFT WORDS: 12972 
+NUMBER OF LEFT WORDS: 2315
 
 BEST WORDS:
-        #1: serai { min: 12275, mean: 12656.866635831011 }
-        #2: soare { min: 12203, mean: 12668.169133518342 }
-        #3: reais { min: 12203, mean: 12667.238976256549 }
-        #4: paseo { min: 12196, mean: 12543.62781375269 }
-        #5: aeros { min: 12171, mean: 12662.266574159734 }
+	#1: raise { min: 2147, mean: 2253.9991360691165 }
+	#2: arise { min: 2147, mean: 2251.2742980561566 }
+	#3: aesir { min: 2147, mean: 2245.1170626349926 }
+	#4: reais { min: 2147, mean: 2243.3892008639336 }
+	#5: serai { min: 2147, mean: 2242.0786177105856 }
 
-INPUT WORD > serai
-HINT > 00100
+INPUT WORD > raise
+HINT > 10000
 -----
-NUMBER OF LEFT WORDS: 214 
+NUMBER OF LEFT WORDS: 103
 
 BEST WORDS:
-        #1: choon { min: 190, mean: 202.93457943925236 }
-        #2: croon { min: 189, mean: 203.28037383177573 }
-        #3: phono { min: 189, mean: 200.94392523364488 }
-        #4: brunt { min: 188, mean: 202.55140186915887 }
-        #5: cloot { min: 187, mean: 203.42056074766356 }
+	#1: colon { min: 93, mean: 97.45631067961166 }
+	#2: cloot { min: 92, mean: 98.15533980582524 }
+	#3: coopt { min: 92, mean: 97.32038834951456 }
+	#4: wroot { min: 92, mean: 96.89320388349516 }
+	#5: cyton { min: 91, mean: 97.5339805825243 }
 
-INPUT WORD > choon
-HINT > 01020
+INPUT WORD > colon
+HINT > 00020
 -----
-NUMBER OF LEFT WORDS: 1 
+NUMBER OF LEFT WORDS: 7
 
-LEFT WORDS: [ 'humor' ] 
+LEFT WORDS: [
+  'furor', 'humor',
+  'juror', 'throb',
+  'throw', 'tumor',
+  'tutor'
+]
+
+BEST WORDS:
+	#1: bathe { min: 5, mean: 5.7142857142857135 }
+	#2: withe { min: 5, mean: 5.7142857142857135 }
+	#3: metif { min: 5, mean: 5.7142857142857135 }
+	#4: beths { min: 5, mean: 5.7142857142857135 }
+	#5: fetch { min: 5, mean: 5.7142857142857135 }
+
+INPUT WORD > bathe
+HINT > 00010
+-----
+NUMBER OF LEFT WORDS: 1
+
+LEFT WORDS: [ 'humor' ]
 
 ANSWER: humor
 ```
