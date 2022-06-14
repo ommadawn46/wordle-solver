@@ -1,6 +1,6 @@
 # wordle-solver
 
-[WORDLE](https://www.powerlanguage.co.uk/wordle/) solver written in node.js
+[WORDLE](https://www.nytimes.com/games/wordle/index.html) solver written in node.js
 
 ```
 ⬛ = 0
